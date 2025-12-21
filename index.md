@@ -12,8 +12,3 @@ Welcome to My Home Page
 - [{{ post.title }}]({{ post.url }})
   {{ post.excerpt }}
 {% endfor %}
-
-  WORDPRESS_DB_HOST: db
-      WORDPRESS_DB_USER: egkoppel
-      WORDPRESS_DB_PASSWORD: fdjfrjkrjkrjkfgdhbhbkfdjk
-      WORDPRESS_DB_NAME: egkoppelwp
