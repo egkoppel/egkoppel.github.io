@@ -98,7 +98,8 @@ pub fn new(gop: &mut GraphicsOutput) -> Self {
 
 Unfortunately, this gives us a couple of borrow checker errors.
 
-<code style="white-space: pre;">
+<pre>
+<code>
 <span style="color: #fc5e53; font-weight: bold;">error[E0515]</span>: cannot return value referencing local variable `driver`
 <span style="color: #6eb5fa; font-weight: bold;"> --></span> bootloader/src/framebuffer/mod.rs:16:2
 <span style="color: #6eb5fa; font-weight: bold;">   |</span>
@@ -114,7 +115,7 @@ Unfortunately, this gives us a couple of borrow checker errors.
 <span style="color: #6eb5fa; font-weight: bold;">   | ----------- `buffer` is borrowed here</span>
 <span style="color: #6eb5fa; font-weight: bold;">...</span>
 <span style="color: #6eb5fa; font-weight: bold;">14 |</span> Self { display  }
-<span style="color: #6eb5fa; font-weight: bold;">   |</span>        <span style="color: #fc5e53; font-weight: bold;">^^^^^^^ returns a value referencing data owned by the current function</span></code>
+<span style="color: #6eb5fa; font-weight: bold;">   |</span>        <span style="color: #fc5e53; font-weight: bold;">^^^^^^^ returns a value referencing data owned by the current function</span></code></pre>
 
 The issue here is that the display internally stores a reference to its corresponding driver, which in turn stores a reference to its buffer, and in returning the display from our `new` function, the driver and buffer gets dropped, causing LVGL to hold a dangling reference.
 There are two ways around this - either, we can `Box` the display driver and store that in the `Gui` struct too, so our reference is always pointing to the same place on the heap, or we can store the driver and buffer directly and create a self referential struct.
@@ -216,7 +217,7 @@ pub fn new(gop: &mut GraphicsOutput) -> Gui<'_> {
 
 Unfortunately we're still not done, and <strong>still</strong> get borrow checker errors.
 
-<code style="white-space: pre;">
+<pre><code>
 <span style="color: #fc5e53; font-weight: bold;">error[E0597]</span>: `buffer` does not live long enough
 <span style="color: #6eb5fa; font-weight: bold;"> --></span> bootloader/src/framebuffer/mod.rs:10:4
 <span style="color: #6eb5fa; font-weight: bold;">   |</span>
@@ -248,7 +249,7 @@ Unfortunately we're still not done, and <strong>still</strong> get borrow checke
 <span style="color: #6eb5fa; font-weight: bold;">   | |_- argument requires that `buffer` is borrowed for `'static`</span>
 <span style="color: #6eb5fa; font-weight: bold;">...</span>
 <span style="color: #6eb5fa; font-weight: bold;">14 |</span> Gui { display, driver, buffer }
-<span style="color: #6eb5fa; font-weight: bold;">   |</span> <span style="color: #fc5e53; font-weight: bold;">                       ^^^^^^ move out of `buffer` occurs here</span></code>
+<span style="color: #6eb5fa; font-weight: bold;">   |</span> <span style="color: #fc5e53; font-weight: bold;">                       ^^^^^^ move out of `buffer` occurs here</span></code></pre>
 
 The issue here is that we told the borrow checker to expect <code>'static</code> references, and then gave it references scoped to the current function, and even worse, moved the object the reference came from, triggering both an error about not living long enough <strong>and</strong> one about dropping the owner while it's borrowed. The fix for this is simple, if slightly scary - we need to adjust the lifetime of <code>&mut buffer</code> and <code>&mut driver</code> with a <code>transmute</code>. In this situation, we know this is safe since we manually made sure that the references are never dangling.
 
