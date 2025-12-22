@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Popcorn - attempt 2
+title: "Popcorn - attempt 2"
 ---
 Having been demotivated from continuing with Popcorn attempt 1 with all the strange, hard to track down memory bugs, I decided to start again (and write this series of blog posts alongside) but in Rust.
 I technically have already done some OS development in Rust, in the experimental pre-Popcorn times, but at that point had never used it before, and didn't properly understand how to write idiomatic Rust.
