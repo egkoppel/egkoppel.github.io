@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Writing a UEFI bootloader - part 1"
+title: "Writing a UEFI bootloader - part 3"
 ---
 With filesystem access in place, we can start working on loading images from the disk, and putting together a basic UI. Once that's in place, we should be able to load a kernel image from disk, and boot into it.
 
