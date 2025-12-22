@@ -99,8 +99,7 @@ pub fn new(gop: &mut GraphicsOutput) -> Self {
 Unfortunately, this gives us a couple of borrow checker errors.
 
 <pre>
-<code>
-<span style="color: #fc5e53; font-weight: bold;">error[E0515]</span>: cannot return value referencing local variable `driver`
+<code><span style="color: #fc5e53; font-weight: bold;">error[E0515]</span>: cannot return value referencing local variable `driver`
 <span style="color: #6eb5fa; font-weight: bold;"> --></span> bootloader/src/framebuffer/mod.rs:16:2
 <span style="color: #6eb5fa; font-weight: bold;">   |</span>
 <span style="color: #6eb5fa; font-weight: bold;">12 |</span> let display = Display::new(&mut driver);
@@ -156,7 +155,12 @@ So if it's the same as the lifetime of our <code>gop</code> argument, then we ca
 pub struct Gui<'gop> {
 	display: Display</* todo */, 'gop, /* todo */>,
 	driver: Box<Driver<'gop, /* todo */>>,
-	buffer: Box<DrawBuffer< } impl Gui>'_< { pub fn new(gop: &mut GraphicsOutput) -< Gui>'_< { ... } }
+	buffer: Box<DrawBuffer>,
+}
+
+impl Gui<'_> {
+	pub fn new(gop: &mut GraphicsOutput) -> Gui<'_> { ... }
+}
 ```
 
 So what's the lifetime of our driver? It's valid as long as the <code>Box</code> isn't dropped, and the <code>Box</code> only gets dropped when <code>Gui</code> gets dropped - so it's the lifetime of the object itself? But how do we name this <code>'self</code> lifetime? Unfortunately there isn't a way, and that starts to make sense when you consider drop order. If we take the following code and run it
@@ -217,8 +221,7 @@ pub fn new(gop: &mut GraphicsOutput) -> Gui<'_> {
 
 Unfortunately we're still not done, and <strong>still</strong> get borrow checker errors.
 
-<pre><code>
-<span style="color: #fc5e53; font-weight: bold;">error[E0597]</span>: `buffer` does not live long enough
+<pre><code><span style="color: #fc5e53; font-weight: bold;">error[E0597]</span>: `buffer` does not live long enough
 <span style="color: #6eb5fa; font-weight: bold;"> --></span> bootloader/src/framebuffer/mod.rs:10:4
 <span style="color: #6eb5fa; font-weight: bold;">   |</span>
 <span style="color: #6eb5fa; font-weight: bold;"> 5 |</span>   let mut buffer = AliasableBox::from_unique(Box::new(DrawBuffer::new(8000)));
