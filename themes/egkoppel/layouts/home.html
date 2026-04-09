@@ -4,9 +4,9 @@
   {{ range (where (where .Site.RegularPages "Section" "posts") "Draft" "==" true).ByPublishDate.Reverse }}
   <li class="draft">
     <article>
-      <h1 class="title">{{ .Title }}</h1>
+      <h1>{{ .Title }}</h1>
       <span class="dots" aria-hidden="true"></span>
-      <time class="date">Coming eventually</time>
+      <time>Coming eventually</time>
     </article>
   </li>
 {{ end }}
@@ -14,9 +14,9 @@
   <li>
     <a href="{{ .RelPermalink }}">
       <article>
-        <h1 class="title">{{ .Title }}</h1>
+        <h1>{{ .Title }}</h1>
         <span class="dots" aria-hidden="true"></span>
-        <time class="date" datetime="{{ .PublishDate }}">{{ .PublishDate.Format "2.1.06" }}</time>
+        <time datetime="{{ .PublishDate }}">{{ .PublishDate.Format "2.1.06" }}</time>
       </article>
     </a>
   </li>
