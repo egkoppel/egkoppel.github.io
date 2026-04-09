@@ -1,0 +1,25 @@
+{{ define "main" }}
+{{ .Content }}
+<ul class="post-list">
+  {{ range (where (where .Site.RegularPages "Section" "posts") "Draft" "==" true).ByPublishDate.Reverse }}
+  <li class="draft">
+    <article>
+      <h1 class="title">{{ .Title }}</h1>
+      <span class="dots" aria-hidden="true"></span>
+      <time class="date">Coming eventually</time>
+    </article>
+  </li>
+{{ end }}
+{{ range (where (where .Site.RegularPages "Section" "posts") "Draft" "!=" true).ByPublishDate.Reverse }}
+  <li>
+    <a href="{{ .RelPermalink }}">
+      <article>
+        <h1 class="title">{{ .Title }}</h1>
+        <span class="dots" aria-hidden="true"></span>
+        <time class="date" datetime="{{ .PublishDate }}">{{ .PublishDate.Format "2.1.06" }}</time>
+      </article>
+    </a>
+  </li>
+{{ end }}
+</ul>
+{{ end }}

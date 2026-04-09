@@ -1,0 +1,207 @@
+:root{
+  --bg: #fcfcfc;
+  --text: #4a515b;
+  --muted:#4a515b7f;
+  
+  --max: 44rem;
+  --pad: 1.25rem;
+  --leading: 1.65;
+}
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 16px/var(--leading) system-ui, -apple-system, Segoe UI,
+        Roboto, Helvetica, Arial, sans-serif;
+}
+
+main, nav {
+    max-width: 40em;
+    margin: 0 auto;
+    padding: 0 2em;
+}
+
+nav {
+    padding-top: 2em;
+}
+
+nav ul {
+    list-style: none;
+    margin: 0 auto;
+    padding: 0;
+}
+
+nav li {
+    display: inline;
+    padding: 0;
+}
+
+nav li:not(:first-child) {
+    padding: 0 1em;
+}
+
+a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 3px;
+}
+
+a:hover {
+  text-decoration-style: solid;
+}
+
+.post-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.post-list li {
+  margin: .5rem 0;
+  align-items: baseline;
+  gap: .6rem;
+  color: inherit;
+}
+
+.draft {
+    color: var(--muted);
+}
+
+.post-list a {
+  text-decoration: none;
+}
+
+.post-list h1 {
+    font-size: 100%;
+    font-weight: normal;
+    display: inline;
+    margin: 0;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.post-list article {
+    display: flex;
+    align-items: baseline;
+    width: 100%;
+    column-gap: 0.3em;
+}
+
+.post-list time {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+.post-list .dots {
+  flex-grow: 1;
+  border-bottom: 2px dotted currentColor;
+  opacity: 0.5;
+}
+
+.post-list h1,
+.post-list .dots,
+.post-list time {
+    transition: color 120ms ease;
+}
+
+.post-list a:hover h1,
+.post-list a:hover .dots,
+.post-list a:hover time {
+    color: #111111;
+}
+
+h1 > a {
+    text-decoration: none;
+}
+
+h1 > a::before {
+    content: "#";
+    position: absolute;
+    transform: translateX(-100%);
+    padding-right: 0.5em;
+    opacity: 0;
+    transition: opacity 120ms ease;
+}
+
+h1 > a:hover::before {
+    opacity: 0.5;
+}
+
+aside {
+    display: block;
+    position: relative;
+    float: right;
+    clear: right;
+    transform: translateY(3.5lh);
+
+    width: 35%;  /* season to taste */
+    margin: 0;
+    margin-bottom: 1.1rem;
+    margin-top: 1.1rem;
+    margin-right: -42%;
+    padding: 0.5rem;
+    padding-top: 0;
+    padding-bottom: 0;
+    box-sizing: border-box;
+    text-align: left;
+
+    /* Use a slighly smaller font and the secondary text color.*/
+    font-size: 70%;
+    line-height: 150%;
+    color: #555;
+
+    /* Add a vertical bar on the left side of the comment.*/
+    border: none;
+    border-left-color: #555;
+    border-left-style: solid;
+    border-left-width: 1px;
+}
+
+.highlight > div {
+    overflow: scroll;
+    padding: 0 0.5em;
+}
+
+blockquote {
+  position: relative;
+  padding: 0.5em 2em;
+  border: none;
+}
+
+blockquote::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 30px;  /* Length of the corner */
+  height: 30px; /* Length of the corner */
+  border-top: 0.1em solid var(--muted);
+  border-left: 0.1em solid var(--muted);
+}
+
+blockquote::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 30px;
+  height: 30px;
+  border-bottom: 0.1em solid var(--muted);
+  border-right: 0.1em solid var(--muted);
+}
+
+header > h1 {
+    display: inline;
+    font-size: 150%;
+}
+
+header > time {
+    float: right;
+    padding-top: 0.3lh;
+}

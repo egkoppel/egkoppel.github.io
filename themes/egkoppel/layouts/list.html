@@ -1,0 +1,20 @@
+{{ define "main" }}
+<ul class="post-list">
+  {{ range (where .Pages "Draft" "==" true).ByPublishDate.Reverse }}
+  <li class="post-list-item draft">
+    <span class="title">{{ .Title }}</span>
+    <span class="dots" aria-hidden="true"></span>
+    <span class="date">Coming eventually</span>
+  </li>
+{{ end }}
+{{ range (where .Pages "Draft" "!=" true).ByPublishDate.Reverse }}
+  <li>
+    <a href="{{ .RelPermalink }}" class="post-list-item">
+      <span class="title">{{ .Title }}</span>
+      <span class="dots" aria-hidden="true"></span>
+      <time class="date" datetime="{{ .PublishDate }}">{{ .PublishDate.Format "2.1.06" }}</time>
+    </a>
+  </li>
+{{ end }}
+</ul>
+{{ end }}

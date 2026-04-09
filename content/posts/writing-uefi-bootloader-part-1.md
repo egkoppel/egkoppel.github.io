@@ -1,6 +1,7 @@
 ---
-layout: post
 title: "Writing a UEFI bootloader - part 1"
+date: 2023-05-24
+draft: false
 ---
 For some reason, I decided that for this attempt, it would be fun trying to write a bootloader myself rather then relying on GRUB.
 I could make up probably-untrue excuse about easier access to hardware control, like the [GOP](https://wiki.osdev.org/GOP), but the real reason is likely closer to "why not?".
@@ -34,9 +35,10 @@ let Ok(gop) = services.open_protocol_exclusive::<GraphicsOutput>(gop_handle) els
 info!("Opened GOP protocol");
 ```
 
+{{< sidenote >}}From that comment, I think the problem is that the GOP protocol is already opened by the uefi-rs helpers so it can provide output through the log crate. When trying to open the protocol in exclusive mode, the UEFI firmware is supposed to shut down other applications that also have exclusive access to the protocol, which I think in this case includes our bootloader itself.{{</ sidenote >}}
 And unfortunately running this produces neither "Unable to open GOP" nor "Opened GOP protocol".
 Manually causing a panic does work properly, which means that something in `open_protocol_exclusive` is causing the system to hang.
-After some digging, I found [this comment](https://github.com/rust-osdev/uefi-rs/blob/1b969948b188e74f0f98b50c9865ea9dec852bad/uefi-test-runner/src/proto/console/gop.rs#L18) in the uefi-rs test sources[^1] - I'm not sure whether this applies here too, but following the advice there does seem to have fixed the issues.
+After some digging, I found [this comment](https://github.com/rust-osdev/uefi-rs/blob/1b969948b188e74f0f98b50c9865ea9dec852bad/uefi-test-runner/src/proto/console/gop.rs#L18) in the uefi-rs test sources - I'm not sure whether this applies here too, but following the advice there does seem to have fixed the issues.
 In theory now we can access the raw framebuffer, so let's try painting the whole screen red.
 First I'll try pulling out some basic info, like the pixel format and resolution, which seems to work.
 
@@ -60,5 +62,3 @@ Weirdly this means that BGR ends up being written in RGB, and RGB is written as 
 
 In the next post I'll try and get filesystem access working, and hopefully set something up to draw some text and potentially basic BMP files onto the screen.
 From there I can hopefully build some kind of menu with user input, and maybe try loading the kernel and handing off to that.
-
-[^1]: From that comment, I think the problem is that the GOP protocol is already opened by the uefi-rs helpers so it can provide output through the log crate. When trying to open the protocol in exclusive mode, the UEFI firmware is supposed to shut down other applications that also have exclusive access to the protocol, which I think in this case includes our bootloader itself.

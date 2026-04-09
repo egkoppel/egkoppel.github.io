@@ -1,6 +1,7 @@
 ---
-layout: post
 title: "NVMe booting on 12th gen Poweredge"
+date: 2025-01-04
+draft: false
 ---
 For anyone who just wants the solution without the story, skip to [here](#What if the firmware just had drivers?).
 

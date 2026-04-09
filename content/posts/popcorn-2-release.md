@@ -1,8 +1,15 @@
+---
+title: "Popcorn 2 release"
+date: 2025-12-01
+draft: true
+---
+
 Source code (and maybe prebuilt ISOs?) is all available on [GitHub](https://github.com/popcorn-2/popcorn-2).
 
 ---
 
-It's been a very long time since I posted anything here, mainly cause I just haven't had the motivation to write anything interesting. Many eons I started (and as is the way, never finished) a series of posts about writing a UEFI bootloader in Rust. That was all part of my long-running side project - Popcorn2 (the 2 because i wrote Popcorn[^1] even longer ago in C++ and, having messed around with Rust for a bit before, I ended up getting frustrated at C++ move semantics and type system and page faults and a bunch of stuff, so I did what any insane person would do and rewrote it in Rust).
+{{< sidenote >}}The name Popcorn originally coming from me coming into school one day, declaring "I'm learning how to write a kernel - what do I call it?" at my friends, and one them responding with "kernel, like the popcorn thing?".{{</ sidenote >}}
+It's been a very long time since I posted anything here, mainly cause I just haven't had the motivation to write anything interesting. Many eons I started (and as is the way, never finished) a series of posts about writing a UEFI bootloader in Rust. That was all part of my long-running side project - Popcorn2 (the 2 because i wrote Popcorn even longer ago in C++ and, having messed around with Rust for a bit before, I ended up getting frustrated at C++ move semantics and type system and page faults and a bunch of stuff, so I did what any insane person would do and rewrote it in Rust).
 
 To put it succinctly, Popcorn2 (which I'll probably just refer to as Popcorn because it's faster to type and less clunky to say) is a microkernel written almost entirely by me, because I have ~~brilliant~~ probably terrible ideas about how an OS "should be designed" which I wanted to experiment with. Many of the design choices are probably very opinionated, and based on what I think is as close to a pleasant design as I can get.
 
@@ -37,7 +44,10 @@ This defines some of the standard file I/O methods - `read@core.io.Read()` is a 
 
 (probably also something about how methods are supposed to map directly to high level language constructs, and interface bindings can just be generated from the `pip` file)
 
-Each process contains a set of handles rather than file descriptors, where each handle in a numeric descriptor referring to a specific object with a specific set of protocols supported on it[^2]. Therefore owning a handle is a capability to perform whatever methods are available on it. For example, owning a handle that implements `driver.PciDevice` gives the process full control over the PCI device, or instead just a object implementing the `mem.Pager` protocol (allows `mmap`ing into the address space) would just give access to a specific BAR.
+{{< sidenote >}}Technically, a handle actually refers to multiple objects, and method calls are dispatched to a particular object based on which interface the method comes from.
+For example, (very contrived example) calling `read()` on a handle will dispatch the read method to one object, but calling `write()` on the same handle could dispatch it to a different object.{{</ sidenote >}}
+Each process contains a set of handles rather than file descriptors, where each handle in a numeric descriptor referring to a specific object with a specific set of protocols supported on it.
+Therefore owning a handle is a capability to perform whatever methods are available on it. For example, owning a handle that implements `driver.PciDevice` gives the process full control over the PCI device, or instead just a object implementing the `mem.Pager` protocol (allows `mmap`ing into the address space) would just give access to a specific BAR.
 
 Additionally, to allow inheritance of handles, and therefore capabilities, each process is passed a handle table at startup - a mapping of string names to handle numbers. Typically this would include handles for `io.stdin`, `io.stdout`, `io.stderr` and `thread.main`, but the parent process can add arbitrary handles to this, such as the window manager passing a `wm.window` handle or similar to graphical programs to allow them to interact with the window manager.
 
@@ -45,7 +55,8 @@ Additionally, to allow inheritance of handles, and therefore capabilities, each 
 
 (this whole section probably needs cleaning up i'm tired and it's a bit of a ramble)
 
-Something is required to be on the other end of each object, for method calls to be dispatched to, and in the case of Popcorn, these are called servers. As you might guess from the heading of the previous section, every server is just an object implementing the `core.srv.Sync` protocol[^3]! This contains three methods: `next` and `reply`, which are the pair of methods for getting the next method call to process and returning the response back to the calling process, and `forge`, a method for taking the local identifier that a server uses (eg. maybe an inode number for a filesystem driver, or the TID for the process server) and creating an `Arc<Handle>` object in the kernel - roughly equivalent to `struct file` under Linux - which can then be mapped into another process's handle map to give it access to the object. A diagram might make this clearer:
+{{< sidenote >}}A long time ago there was a plan for a `core.srv.Async` protocol too but because of the way everything worked out, that ends up not being needed and the name has just stuck{{</ sidenote >}}
+Something is required to be on the other end of each object, for method calls to be dispatched to, and in the case of Popcorn, these are called servers. As you might guess from the heading of the previous section, every server is just an object implementing the `core.srv.Sync` protocol! This contains three methods: `next` and `reply`, which are the pair of methods for getting the next method call to process and returning the response back to the calling process, and `forge`, a method for taking the local identifier that a server uses (eg. maybe an inode number for a filesystem driver, or the TID for the process server) and creating an `Arc<Handle>` object in the kernel - roughly equivalent to `struct file` under Linux - which can then be mapped into another process's handle map to give it access to the object. A diagram might make this clearer:
 
 ```
                             Client process handle            Arc<Handle>
@@ -88,10 +99,3 @@ To facilitate this, there are two kernel crates within the codebase - `kernel` a
 ---
 
 This post has focused entirely on the design of the Popcorn2 kernel. In theory, any set of userspace programs could sit atop the kernel (assuming it follows the microkernel IPC everything-is-an-object philosophy) and create an OS, but given the entire premise of this project being "I want to implement my opinionated design", of course I have my own opinionated userspace too. Since this is getting a bit long for one post, if I magically gain the motivation to write more in the future, I'll go through the design of the userspace in depth too.
-
-[^1]: The name Popcorn originally coming from me coming into school one day, declaring "I'm learning how to write a kernel - what do I call it?" at my friends, and one them responding with "kernel, like the popcorn thing?".
-
-[^2]: Technically, a handle actually refers to multiple objects, and method calls are dispatched to a particular object based on which interface the method comes from.
-	For example, (very contrived example) calling `read()` on a handle will dispatch the read method to one object, but calling `write()` on the same handle could dispatch it to a different object.
-
-[^3]: A long time ago there was a plan for a `core.srv.Async` protocol too but because of the way everything worked out, that ends up not being needed and the name has just stuck

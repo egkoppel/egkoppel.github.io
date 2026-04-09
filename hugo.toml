@@ -1,0 +1,13 @@
+baseURL = 'https://eliyahu.co.uk/'
+locale = 'en-gb'
+title = 'Eliyahu Gluschove-Koppel'
+theme = 'egkoppel'
+buildDrafts = true
+
+[markup]
+  [markup.highlight]
+    lineNos = true
+  [markup.goldmark]
+    [markup.goldmark.parser]
+      [markup.goldmark.parser.attribute]
+        block = true

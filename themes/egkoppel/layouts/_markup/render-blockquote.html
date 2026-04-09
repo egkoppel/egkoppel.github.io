@@ -1,0 +1,6 @@
+<blockquote>
+  {{ .Text }}
+  {{ with .Attributes.cite }}
+    <cite>{{ . }}</cite>
+  {{ end }}
+</blockquote>

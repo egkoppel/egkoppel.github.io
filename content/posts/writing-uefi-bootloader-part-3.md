@@ -1,6 +1,7 @@
 ---
-layout: post
+draft: false
 title: "Writing a UEFI bootloader - part 3"
+date: 2023-06-02
 ---
 With filesystem access in place, we can start working on loading images from the disk, and putting together a basic UI. Once that's in place, we should be able to load a kernel image from disk, and boot into it.
 
@@ -47,7 +48,8 @@ pub fn new_from_gop(gop: &mut GraphicsOutput) -> Self {
 	Self { width: actual_resolution.0, height: actual_resolution.1 } }
 ```
 
-We can then add a stride field, as well as a pointer to the framebuffer and a double-buffer. To ensure the underlying framebuffer lives long enough, I've added a phantom data lifetime, which will be the same as the lifetime of the GOP handle the framebuffer is built on. (I had a look inside the uefi crate and it seems this is the lifetime it uses internally for its own Framebuffer object, but I think it might be possible to break this by changing the resolution to result in a different framebuffer address without causing any lifetime problems.) This results in the final struct looking like this[^1]:
+{{< sidenote >}}I know technically that I should also be worrying about colour format but currently everything is just inside qemu which seems to use BGR, so I'm leaving this for now{{</ sidenote >}}
+We can then add a stride field, as well as a pointer to the framebuffer and a double-buffer. To ensure the underlying framebuffer lives long enough, I've added a phantom data lifetime, which will be the same as the lifetime of the GOP handle the framebuffer is built on. (I had a look inside the uefi crate and it seems this is the lifetime it uses internally for its own Framebuffer object, but I think it might be possible to break this by changing the resolution to result in a different framebuffer address without causing any lifetime problems.) This results in the final struct looking like this:
 
 ```rust
 pub struct Framebuffer<'a> {
@@ -82,7 +84,9 @@ To draw the rectangle, we can just iterate over all the pixels within the rectan
 To draw images, we can follow a similar process - iterate over all the pixels within the image data, and call a draw pixel function for each one. To do this, we can make an iterator over a Targa image which returns each pixel and its position. We also need some way to provide the offset to draw an image at, so I opted for making a wrapper type that contains both the Targa image and the offset to start drawing at. In trying to make it as generic as possible, I ended up with this lovely where clause.
 
 ```rust
-pub fn new<P>(origin: (usize, usize), image: T) -> Self where for<'a> &'a T: IntoIterator<Item = P>, Pixel: From<P> { ... }
+pub fn new<P>(origin: (usize, usize), image: T) -> Self
+	where for<'a> &'a T: IntoIterator<Item = P>, Pixel: From<P>
+{ ... }
 ```
 
 The idea is that you have some image type <code>T</code>, on which you can call <code>into_iter(&self)</code>. (I've made <code>IntoIterator</code> a bound on <code>&T</code> rather than <code>T</code> since it's probably better here for the iterator conversion to be non-consuming - that way one image can be drawn many times over and over. The `for<'a>` is a [higher-rank trait bound](https://doc.rust-lang.org/nomicon/hrtb.html) - we need it here since there is no known lifetime that we're calling <code>into_iter()</code> with until we actually call it, and it's a valid call for any lifetime.) The iterator it provides then returns some type which is convertible to a <code>Pixel</code>, to convert it from the image's own pixel format into the correct format to put into the framebuffer. With that set up, the actual <code>draw()</code> function is fairly trivial:
@@ -102,5 +106,3 @@ We iterate over the pixels, adding an offset to each one so it draws at the give
 ---
 
 With a basic GUI together, we can now start working on keyboard input and kernel loading (in one order or another).
-
-[^1]: I know technically that I should also be worrying about colour format but currently everything is just inside qemu which seems to use BGR, so I'm leaving this for now

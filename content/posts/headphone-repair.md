@@ -1,6 +1,7 @@
 ---
-layout: post
 title: "Headphone repair and upgrades"
+date: 2023-11-12
+draft: false
 ---
 For the past few years, I've been using Senheiser HD 202s as my headphones (I found them lying unused in a cupboard - yay free stuff).
 So far they've been pretty good in my opinion, having never devled into the rabbithole that is audio at any point.
