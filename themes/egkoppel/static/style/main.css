@@ -63,8 +63,6 @@ a:hover {
 .post-list li {
   margin: .5rem 0;
   align-items: baseline;
-  gap: .6rem;
-  color: inherit;
 }
 
 .draft {
