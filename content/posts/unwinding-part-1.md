@@ -15,8 +15,8 @@ To get started with that, I decided to follow the [testing section of Phillip Op
 
 This bothered me. Just disabling features is no fun. There isn't any challenge in that. On top of the lack of `#[should_panic]` we also lose a couple of another nice features - (a) tests stop running as soon as one fails, since there's no way to recover from the panic, and (b) there's no way to get a nice backtrace on any panic, making debugging slightly more difficult/annoying. So I set about getting stack unwinding to work in the kernel. I managed to get it working for C++ in Popcorn1, so it shouldn't be <em>too</em> bad, right?
 
-{{< sidenote >}}This is a magic symbol inserted by GNU-like linkers to tell unwind implementations where the unwind information is stored - it is equivalent to the `__eh_frame` symbol manually added later on{{</ sidenote >}}
 I quickly discovered the [unwinding crate](https://crates.io/crates/unwinding) which sounded like exactly what I wanted - even better, it literally has a bare metal section in the docs! Unfortunately, it was (very slightly) too good to be true - `lld` seemed to be refusing to link `__GNU_EH_FRAME_HDR`, even with the `--eh-frame-hdr` option passed. And the same issues happened with `__etext` as well. So I switched to providing the symbols myself, which wasn't too difficult. First I added a `GNU_EH_FRAME` section (I'm not sure this is necessary but the normal linker script does so why not copy it), as well as a `.eh_frame_hdr` and `.eh_frame` segment.
+{{< sidenote >}}This is a magic symbol inserted by GNU-like linkers to tell unwind implementations where the unwind information is stored - it is equivalent to the `__eh_frame` symbol manually added later on{{</ sidenote >}}
 
 ```linker-script
 PHDRS {

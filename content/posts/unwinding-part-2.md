@@ -25,6 +25,7 @@ ffffffff8003cd30 t <u32 as core::fmt::Debug>::fmt
 ffffffff8003cd80 t <usize as core::fmt::Debug>::fmt
 ```
 
+Each line starts with a symbol address in hexadecimal, padded up to 16 characters. Then a single character for the type of symbol, followed by the demangled name. Even better, on an unoptimized build, the symbol file is 600 KiB, and an optimized build gets it down to 190 KiB. It does lose line numbers, but it's still so much smaller than the DWARF debuginfo (over 20x smaller!), and so much easier to parse.
 {{< sidenote >}}
 The likely symbol types in this case are
 ```
@@ -36,7 +37,6 @@ T - executable code
 ```
 Each type can be either capitalised or lowercase, indicating its visibility. Capital symbols are exported and visible to code linked to the kernel, whereas lowercase symbols are only visible within the kernel.
 {{</ sidenote >}}
-Each line starts with a symbol address in hexadecimal, padded up to 16 characters. Then a single character for the type of symbol, followed by the demangled name. Even better, on an unoptimized build, the symbol file is 600 KiB, and an optimized build gets it down to 190 KiB. It does lose line numbers, but it's still so much smaller than the DWARF debuginfo (over 20x smaller!), and so much easier to parse.
 
 # Putting it to use
 

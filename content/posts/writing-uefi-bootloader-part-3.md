@@ -48,8 +48,8 @@ pub fn new_from_gop(gop: &mut GraphicsOutput) -> Self {
 	Self { width: actual_resolution.0, height: actual_resolution.1 } }
 ```
 
-{{< sidenote >}}I know technically that I should also be worrying about colour format but currently everything is just inside qemu which seems to use BGR, so I'm leaving this for now{{</ sidenote >}}
 We can then add a stride field, as well as a pointer to the framebuffer and a double-buffer. To ensure the underlying framebuffer lives long enough, I've added a phantom data lifetime, which will be the same as the lifetime of the GOP handle the framebuffer is built on. (I had a look inside the uefi crate and it seems this is the lifetime it uses internally for its own Framebuffer object, but I think it might be possible to break this by changing the resolution to result in a different framebuffer address without causing any lifetime problems.) This results in the final struct looking like this:
+{{< sidenote >}}I know technically that I should also be worrying about colour format but currently everything is just inside qemu which seems to use BGR, so I'm leaving this for now{{</ sidenote >}}
 
 ```rust
 pub struct Framebuffer<'a> {

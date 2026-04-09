@@ -33,8 +33,6 @@ To convert string literals, we can wrap each literal in the `cstr16!()` macro.
 
 ---
 
-{{< sidenote >}}This is because `CStr16` doesn't implement the `AsRef<Path>` trait, which allows borrowing objects as a reference to different type than they are{{</ sidenote >}}
-{{< sidenote >}}If none of the GOP settings (like resolution) have been changed, then the logging functions provided by uefi-rs still work fine (and just overwrite sections of the framebuffer){{</ sidenote >}}
 Once we have the filesystem object, `uefi-rs` provides a nice wrapper API, called `FileSystem`, around the underlying UEFI Simple File System Protocol.
 I placed a `text.txt` file in `/EFI` on the EFI partition qemu used.
 Then we can easily read it into a `Vec<u8>` with the `read()` function.
@@ -42,6 +40,8 @@ One small difference to `std::fs` here is that, while both the `std` and `uefi` 
 This means we need to call `Path::new()` on the string to convert it.
 (However, this is just some pointer casting and so just a no-op.)
 With the file now in a `Vec<u8>`, we can convert it to a `str` (assuming the file is UTF-8), and print it out to the screen.
+{{< sidenote >}}This is because `CStr16` doesn't implement the `AsRef<Path>` trait, which allows borrowing objects as a reference to different type than they are{{</ sidenote >}}
+{{< sidenote >}}If none of the GOP settings (like resolution) have been changed, then the logging functions provided by uefi-rs still work fine (and just overwrite sections of the framebuffer){{</ sidenote >}}
 
 The other way to read files is closer to `std::fs` APIs (where the caller provides the buffer to read into), and is probably the more suitable method when loading the kernel image later, since we want to be able to control alignment and location of the loaded kernel code.
 It also doesn't need memory allocation, and so can be used in a bootloader without a heap.
@@ -55,7 +55,6 @@ let fs = services.open_protocol_exclusive::<SimpleFileSystem>(fs_handle);
 let Ok(mut fs) = fs else { panic!("FS protocol not opened") };
 ```
 
-{{< sidenote >}}This returns a Simple File System protocol for the EFI partition - there should be a way to open a protocol for other partitions, but I haven't yet figured this out{{</ sidenote >}}
 Like with opening the GOP, if we use `open_protocol_exclusive()` we need to make sure the rest of our bootloader doesn't already have it open.
 If you've used the `FileSystem` API elsewhere, you need to make sure it's been `drop()`-ed first, otherwise exclusively opening the protocol will fail.
 To get the root directory of the volume, there's a `open_volume()` function on the filesystem object.
@@ -63,6 +62,7 @@ Since the medium could have been removed between opening the protocol and openin
 If it opens successfully, then we can call `read()`, passing in the path (but this time taking a raw `CStr16`), the mode (likely `FileMode::Read`) and file attributes (which are ignored unless creating a file, so can be left as `FileAttribute::empty()`).
 The `open()` function however, doesn't distinguish between files and directories, so to actually read it we need to first convert it into a `RegularFile` using the `into_regular_file()`.
 Then we can finally call `read()`, passing in the buffer to read into.
+{{< sidenote >}}This returns a Simple File System protocol for the EFI partition - there should be a way to open a protocol for other partitions, but I haven't yet figured this out{{</ sidenote >}}
 
 ---
 
