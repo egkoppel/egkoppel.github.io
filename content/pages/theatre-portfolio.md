@@ -1,0 +1,18 @@
+---
+menu: main
+title: Theatre
+---
+- Technical Director - CUADC/Footlights Pantomime 2026: Cinderella (ADC Theatre), Nov 2026
+- Chief Electrician - Follies (Robinson Brickhouse Theatre), Oct 2026
+- Technical Director - Like Rabbits (ADC Theatre), May 2026
+- Technical Director - Medea (ADC Theatre), May 2026
+- Electrical Technician - Into the Woods (ADC Theatre), Mar 2026
+- Chief Electrician - The Orphan of Zhao (ADC Theatre), Mar 2026
+- Production Electrician - Little Women (ADC Theatre), Mar 2026
+- Technical Director - The Great Gatsby (ADC Theatre), Feb 2026
+- Head Carpenter - Private Lives (ADC Theatre), Feb 2026
+- Chief Electrician - Noises Off (ADC Theatre), Jan 2026
+- Followspot Op - CUADC/Footlights Pantomime 2025: Jack and the Beanstalk (ADC Theatre), Nov 2025
+- Chief Electrician - Spider's Web (ADC Theatre), Nov 2025
+- Head Carpenter - A Streetcar Named Desire (ADC Theatre), Nov 2025
+- Assistant Stage Manager - The Addams Family (ADC Theatre), Nov 2025
