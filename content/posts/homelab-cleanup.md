@@ -45,5 +45,7 @@ I'll make a start by reducing the current DHCP pool to only allocate  `.70` to `
 | 192.168.86.30       | Docker VM                          |
 | 192.168.86.31       | Postgres server                    |
 | 192.168.86.33       | TrueNAS VM                         |
+| 192.168.86.34       | macOS build runner                 |
+| 192.168.86.35       | Linux build runner                 |
 | 192.168.86.60       | My laptop                          |
 | 192.168.86.70 - 254 | DHCP pool                          |
