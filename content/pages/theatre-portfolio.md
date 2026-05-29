@@ -4,6 +4,7 @@ title: Theatre
 ---
 - Technical Director - CUADC/Footlights Pantomime 2026: Cinderella (ADC Theatre), Nov 2026
 - Chief Electrician - Follies (Robinson Brickhouse Theatre), Oct 2026
+- Forestage Conversion Team - Chasing Pigeons (ADC Theatre), May 2026
 - Technical Director - Like Rabbits (ADC Theatre), May 2026
 - Technical Director - Medea (ADC Theatre), May 2026
 - Electrical Technician - Into the Woods (ADC Theatre), Mar 2026
