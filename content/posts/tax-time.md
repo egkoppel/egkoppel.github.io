@@ -1,7 +1,7 @@
 ---
 draft: true
 title: Tax time (sadly)
-date: 2026-04-10
+date: 2027-04-10
 ---
 With the April 15th deadline for my US tax payment in less than a week, I've realised now is probably the least worst time to actually get on with figuring out if I actually owe anything.
 Through a big mess of dealing with accidental historic non-compliance, I realised around three years ago that I have to deal with the horror of IRS form 8621 and section 1291 funds.
