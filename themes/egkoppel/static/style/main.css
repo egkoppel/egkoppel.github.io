@@ -26,6 +26,7 @@ main, nav {
 
 nav {
     padding-top: 2em;
+    padding-bottom: 0.5em;
 }
 
 nav ul {
