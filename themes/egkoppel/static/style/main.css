@@ -40,7 +40,7 @@ nav li {
 }
 
 nav li:not(:first-child) {
-    padding: 0 1em;
+    padding: 0 0 0 1em;
 }
 
 a {

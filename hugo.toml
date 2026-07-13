@@ -11,3 +11,9 @@ buildDrafts = true
     [markup.goldmark.parser]
       [markup.goldmark.parser.attribute]
         block = true
+
+[menus]
+  [[menus.main]]
+    name = "CV"
+    weight = 10000000
+    url = "/assets/CV_2026-07.0.pdf"

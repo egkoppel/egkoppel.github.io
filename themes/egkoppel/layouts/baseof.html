@@ -9,10 +9,10 @@
   <body>
     <nav>
         <ul>
-            {{ range .Site.Menus.main }}
+            {{ range .Site.Menus.main.ByWeight }}
             <li>
                 <a href="{{ .URL }}">
-                {{ .Title }}
+                {{ .Name }}
                 </a>
             </li>
             {{ end }}

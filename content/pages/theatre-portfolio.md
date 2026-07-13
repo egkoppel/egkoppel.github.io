@@ -1,5 +1,7 @@
 ---
-menu: main
+menus:
+  main:
+    weight: 1
 title: Technical Theatre
 ---
 - Technical Director - CUADC/Footlights Pantomime 2026: Cinderella (ADC Theatre), Nov 2026
