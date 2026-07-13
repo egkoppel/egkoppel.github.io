@@ -5,10 +5,15 @@
         {{ if .PublishDate }}
             <time datetime="{{ .PublishDate }}">{{ .PublishDate.Format "2.1.06" }}</time>
         {{ end }}
+
+        {{ partial "series.html" (dict "context" . "top" true) }}
     </header>
     {{ if ne .Draft false }}
     <strong>Hello - somehow you've stumbled across an unfinished post! Please don't expect much of this one (just yet).</strong>
     {{ end }}
     {{ .Content }}
+    <footer>
+        {{ partial "series.html" (dict "context" . "top" false) }}
+    </footer>
 </article>
 {{ end }}

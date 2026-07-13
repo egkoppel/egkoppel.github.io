@@ -2,6 +2,8 @@
 title: "Writing a UEFI bootloader - part 2"
 draft: false
 date: 2023-06-02
+series:
+  - "Writing a UEFI bootloader"
 ---
 At the end of the last post, I said that I'd probably start working on filesystems and image rendering.
 And I'm pleased to say that both of those have been a success.

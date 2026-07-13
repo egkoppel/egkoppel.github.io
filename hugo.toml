@@ -17,3 +17,6 @@ buildDrafts = true
     name = "CV"
     weight = 10000000
     url = "/assets/CV_2026-07.0.pdf"
+
+[taxonomies]
+  series = 'series'

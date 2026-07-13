@@ -2,6 +2,8 @@
 title: "Writing a UEFI bootloader - part 1"
 date: 2023-05-24
 draft: false
+series:
+  - "Writing a UEFI bootloader"
 ---
 For some reason, I decided that for this attempt, it would be fun trying to write a bootloader myself rather then relying on GRUB.
 I could make up probably-untrue excuse about easier access to hardware control, like the [GOP](https://wiki.osdev.org/GOP), but the real reason is likely closer to "why not?".

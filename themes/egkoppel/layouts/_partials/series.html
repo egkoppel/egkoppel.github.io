@@ -1,0 +1,23 @@
+{{ with index (.context.GetTerms "series") 0 }}
+    {{ if not $.top }}
+    <hr/>
+    {{ end }}
+
+    <p>Part of the series <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></p>
+    
+    {{ with .Pages.ByDate.Reverse.Prev $.context }}
+        <a style="float: left" href="{{ .RelPermalink }}">← Previous</a>
+    {{ else }}
+        <span style="float: left">First post in series</span>
+    {{ end }}
+    {{ with .Pages.ByDate.Reverse.Next $.context }}
+        <a style="float: right" href="{{ .RelPermalink }}">Next →</a>
+    {{ else }}
+        <span style="float: right">Latest post in series</span>
+    {{ end }}
+
+    <br/>
+    {{ if $.top }}
+    <hr/>
+    {{ end }}
+{{ end }}

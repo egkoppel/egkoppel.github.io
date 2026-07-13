@@ -2,6 +2,8 @@
 title: "Unwinding in a Rust kernel - part 1"
 date: 2023-08-01
 draft: false
+series:
+  - "Rust kernel unwinding"
 ---
 
 Apparently it's been nearly two months since the previous post. Not to worry though, because (after A levels finished) I've been busy with more Popcorn, and made significant progress in both the design and implentation. There's a couple of UEFI posts still to come (one currently in the pipeline) but I thought it might be worth posting soemthing in the meantime to give the appearance that this blog is not in fact dead.

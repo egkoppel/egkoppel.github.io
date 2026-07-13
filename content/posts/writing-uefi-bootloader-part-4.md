@@ -2,6 +2,8 @@
 title: "Writing a UEFI bootloader - part 4"
 draft: false
 date: 2023-10-27
+series:
+  - "Writing a UEFI bootloader"
 ---
 
 It's been a while since I've written a post in this series, but not to worry, because stuff has been happening.

@@ -2,6 +2,8 @@
 title: "Unwinding in a Rust kernel - part 2"
 date: 2023-08-07
 draft: false
+series:
+  - "Rust kernel unwinding"
 ---
 In the last post I managed to get unwinding working within the kernel, but there was the small issue that it would only print out addresses, and each one would need to be converted with a tool like `addr2line` to get any useful debugging information out. The best solution would probably be to get the bootloader to load in debuginfo and parse that in the same way `addr2line` does. However, this has a couple of issues:
 
