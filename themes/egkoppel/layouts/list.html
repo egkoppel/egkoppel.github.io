@@ -1,7 +1,18 @@
 {{ define "main" }}
+
+<header>
+    <h1>{{ .Title }}</h1>
+</header>
+
 {{ .Content }}
+
+{{ $pages := .Pages }}
+{{ if .IsHome }}
+    {{ $pages = where .Site.RegularPages "Section" "posts" }}
+{{ end }}
+
 <ul class="post-list">
-  {{ range (where .Pages "Draft" "==" true).ByPublishDate.Reverse }}
+  {{ range (where $pages "Draft" "==" true).ByPublishDate.Reverse }}
   <li class="draft">
     <article>
       <h1>{{ .Title }}</h1>
@@ -10,7 +21,7 @@
     </article>
   </li>
 {{ end }}
-{{ range (where .Pages "Draft" "!=" true).ByPublishDate.Reverse }}
+{{ range (where $pages "Draft" "!=" true).ByPublishDate.Reverse }}
   <li>
     <a href="{{ .RelPermalink }}">
       <article>

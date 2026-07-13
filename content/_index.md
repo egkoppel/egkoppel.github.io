@@ -1,6 +1,8 @@
 ---
-title: "Posts"
-menu: main
+title: ""
+menus:
+  main:
+    name: "Posts"
 draft: false
 weight: -1
 ---
