@@ -2,7 +2,9 @@
 <article>
     <header>
         <h1>{{ .Title }}</h1>
-        <time datetime="{{ .PublishDate }}">{{ .PublishDate.Format "2.1.06" }}</time>
+        {{ if .PublishDate }}
+            <time datetime="{{ .PublishDate }}">{{ .PublishDate.Format "2.1.06" }}</time>
+        {{ end }}
     </header>
     {{ if ne .Draft false }}
     <strong>Hello - somehow you've stumbled across an unfinished post! Please don't expect much of this one (just yet).</strong>

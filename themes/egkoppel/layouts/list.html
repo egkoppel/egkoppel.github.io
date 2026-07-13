@@ -15,8 +15,10 @@
     <a href="{{ .RelPermalink }}">
       <article>
         <h1>{{ .Title }}</h1>
-        <span class="dots" aria-hidden="true"></span>
-        <time datetime="{{ .PublishDate }}">{{ .PublishDate.Format "2.1.06" }}</time>
+        {{ if .PublishDate }}
+          <span class="dots" aria-hidden="true"></span>
+          <time datetime="{{ .PublishDate }}">{{ .PublishDate.Format "2.1.06" }}</time>
+        {{ end }}
       </article>
     </a>
   </li>
