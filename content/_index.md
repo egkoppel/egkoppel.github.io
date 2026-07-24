@@ -2,7 +2,7 @@
 title: ""
 menus:
   main:
-    name: "Posts"
+    name: "Ramblings"
 draft: false
 weight: -1
 ---
