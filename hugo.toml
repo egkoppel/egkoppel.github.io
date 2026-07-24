@@ -1,6 +1,6 @@
 baseURL = 'https://eliyahu.co.uk/'
 locale = 'en-gb'
-title = 'Eliyahu Gluschove-Koppel'
+title = 'Eliyahu's Ramblings'
 theme = 'egkoppel'
 buildDrafts = true
 
